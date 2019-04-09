@@ -183,13 +183,13 @@ defmodule Paranoid.Ecto do
           |> update_queryable(opts)
         end
 
-        defp has_deleted_column?(%{from: {_source, schema}}) do
-          schema.__schema__(:fields)
+        defp has_deleted_column?(%{from: %{source: {_, struct}}}) do
+          struct.__schema__(:fields)
           |> Enum.member?(:deleted_at)
         end
 
         defp has_deleted_column?(%{} = struct) do
-          struct.__struct__.__schema__(:fields)
+          struct.__schema__(:fields)
           |> Enum.member?(:deleted_at)
         end
 
