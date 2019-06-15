@@ -189,7 +189,7 @@ defmodule Paranoid.Ecto do
         end
 
         defp has_deleted_column?(%{} = struct) do
-          struct.__schema__(:fields)
+           struct.__struct__.__schema__(:fields)
           |> Enum.member?(:deleted_at)
         end
 
