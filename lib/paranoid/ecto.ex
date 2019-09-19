@@ -142,6 +142,10 @@ defmodule Paranoid.Ecto do
           |> apply(:update!, [undelete_changeset(struct), opts])
         end
 
+        defp delete_changeset(%Ecto.Changeset{} = changeset) do
+          changeset.data.__struct__.paranoid_delete_changeset(changeset, %{})
+        end
+
         defp delete_changeset(struct) do
           struct.__struct__.paranoid_delete_changeset(struct, %{})
         end
@@ -181,6 +185,11 @@ defmodule Paranoid.Ecto do
 
           queryable
           |> update_queryable(opts)
+        end
+
+        defp has_deleted_column?(%Ecto.Changeset{} = changeset) do
+          changeset.data.__struct__.__schema__(:fields)
+          |> Enum.member?(:deleted_at)
         end
 
         defp has_deleted_column?(%{from: %{source: {_, struct}}}) do
